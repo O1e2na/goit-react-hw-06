@@ -1,4 +1,3 @@
-
 // src/redux/store.js
 import { configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
@@ -6,23 +5,30 @@ import storage from 'redux-persist/lib/storage';
 import contactsReducer from './contactsSlice';
 import filtersReducer from './filtersSlice';
 
-import { combineReducers } from 'redux';
-
+// Конфігурація для redux-persist
 const persistConfig = {
   key: 'contacts',
   storage,
-  whitelist: ['contacts'], // зберігаємо лише контакти
+  whitelist: ['items'], // Зберігаємо тільки поле items зі стану контактів
 };
 
-const rootReducer = combineReducers({
-  contacts: contactsReducer,
-  filters: filtersReducer,
-});
+// Обгортаємо редюсер контактів у persistReducer
+const persistedContactsReducer = persistReducer(persistConfig, contactsReducer);
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
+// Налаштування Redux Store
 export const store = configureStore({
-  reducer: persistedReducer,
+  reducer: {
+    contacts: persistedContactsReducer,
+    filters: filtersReducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        // Ігноруємо перевірку серіалізованості для дій redux-persist
+        ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
+      },
+    }),
 });
 
+// Створення persistor для redux-persist
 export const persistor = persistStore(store);

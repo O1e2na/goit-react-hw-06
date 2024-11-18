@@ -1,21 +1,14 @@
-.searchBox {
-    margin-bottom: 20px;
+/* src/components/SearchBox/SearchBox.module.css */
+.input {
     width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
-.inputSearch {
-    width: 100%;
-    max-width: 400px;
     padding: 10px;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
+    border: 1px solid var(--primary-color);
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    margin-bottom: 20px;
 }
 
-.inputSearch:focus {
-    border-color: #28a745;
+.input:focus {
     outline: none;
+    border-color: var(--accent-color);
 }

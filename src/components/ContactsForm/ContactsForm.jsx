@@ -1,46 +1,46 @@
-// src/components/ContactsForm/ContactsForm.jsx
-
-import PropTypes from 'prop-types';
+// src/components/ContactForm/ContactForm.jsx
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact, selectContacts } from '../../redux/contactsSlice';
+import { nanoid } from 'nanoid';
 import styles from './ContactsForm.module.css';
 
-function ContactForm({ onAddContact }) {
+const ContactsForm = () => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
+  const dispatch = useDispatch();
+  const contacts = useSelector(selectContacts);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const form = e.target;
-    const name = form.elements.name.value.trim();
-    const number = form.elements.number.value.trim();
-
-    if (name && number) {
-      onAddContact({ name, number });
-      form.reset();
+    if (contacts.some((contact) => contact.name.toLowerCase() === name.toLowerCase())) {
+      alert(`${name} is already in contacts.`);
+      return;
     }
+    dispatch(addContact({ id: nanoid(), name, number }));
+    setName('');
+    setNumber('');
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={styles.form}>
       <input
-        className={styles.input}
         type="text"
-        name="name"
         placeholder="Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
         required
       />
       <input
-        className={styles.input}
-        type="text"
-        name="number"
-        placeholder="Phone Number"
+        type="tel"
+        placeholder="Phone number"
+        value={number}
+        onChange={(e) => setNumber(e.target.value)}
         required
       />
-      <button className={styles.button} type="submit">
-        Add Contact
-      </button>
+      <button type="submit">Add Contact</button>
     </form>
   );
-}
-
-ContactForm.propTypes = {
-  onAddContact: PropTypes.func.isRequired,
 };
 
-export default ContactForm;
+export default ContactsForm;

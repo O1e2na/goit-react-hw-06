@@ -1,39 +1,20 @@
 // src/App.jsx
 
-import { useState } from 'react';
 import ContactForm from './components/ContactsForm/ContactsForm';
 import ContactList from './components/ContactList/ContactList';
 import SearchBox from './components/SearchBox/SearchBox';
-import './App.module.css';
+import './index.css';
 
-function App() {
-  const [contacts, setContacts] = useState([]);
-  const [filter, setFilter] = useState('');
-
-  const handleAddContact = (newContact) => {
-    setContacts((prevContacts) => [...prevContacts, newContact]);
-  };
-
-  const handleDeleteContact = (contactId) => {
-    setContacts((prevContacts) =>
-      prevContacts.filter((contact) => contact.id !== contactId)
-    );
-  };
-
-  const handleFilterChange = (e) => setFilter(e.target.value);
-
-  const filteredContacts = contacts.filter((contact) =>
-    contact.name.toLowerCase().includes(filter.toLowerCase())
-  );
-
+const App = () => {
   return (
     <div>
-      <h1>Contact Book</h1>
-      <ContactForm onAddContact={handleAddContact} />
-      <SearchBox value={filter} onChange={handleFilterChange} />
-      <ContactList contacts={filteredContacts} handleDelete={handleDeleteContact} />
+      <h1>Phonebook</h1>
+      <ContactForm />
+      <h2>Contacts</h2>
+      <SearchBox />
+      <ContactList />
     </div>
   );
-}
+};
 
 export default App;
