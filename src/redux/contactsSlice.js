@@ -1,3 +1,5 @@
+// src/redux/contactsSlice.js
+
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchContacts, addContact as addContactThunk, deleteContact as deleteContactThunk } from './operations';
 
@@ -11,10 +13,10 @@ const contactsSlice = createSlice({
   name: 'contacts',
   initialState,
   reducers: {
-    addContactSync(state, action) { // Змінено ім'я функції
+    addContactSync(state, action) {
       state.items.push(action.payload);
     },
-    deleteContactSync(state, action) { // Змінено ім'я функції
+    deleteContactSync(state, action) {
       state.items = state.items.filter((item) => item.id !== action.payload);
     },
   },
@@ -41,6 +43,7 @@ const contactsSlice = createSlice({
   },
 });
 
+// Правильний експорт асинхронних операцій
 export const { addContactSync, deleteContactSync } = contactsSlice.actions;
 export const selectContacts = (state) => state.contacts.items;
 export const selectStatus = (state) => state.contacts.status;
